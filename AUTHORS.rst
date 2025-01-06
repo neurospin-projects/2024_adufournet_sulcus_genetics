@@ -10,14 +10,14 @@ CEA Neurospin BAOBAB laboratory.
 Core developers
 ...............
 
-The core developers are:
+The core developers is:
 
-* Joël Chavas
-* Aymeric Gaudin
+* Antoine Dufournet
 
 Other contributors
 ..................
 
 Some other past or present contributors are:
 
-* Louise Guillon for the beta-VAE codes.
+* Julien Laval
+* Joël Chavas
