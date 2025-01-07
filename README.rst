@@ -1,5 +1,5 @@
 
-Self-supervised learning for preterm-specific variability of cortical folding in the right superior temporal sulcus region
+Evaluation and interpretation of sulcus genetics
 ###########################################################################
 
 This repository is based on https://github.com/neurospin-projects/2023_agaudin_jchavas_folding_supervised. It aims to apply the self-supervised deep learning pipepline to preterm-specific folding pattern analysis and explore explainability methods.
