@@ -1,5 +1,16 @@
 # Antoine Dufournet 2024
 
+"""
+
+Exemple of command:
+
+bv python3 Anatomist_direction_visu.py 
+              CINGULATE. \
+              R \
+              Sorted_projection/regression_on_latent/rs3020595_G.csv \
+              6
+"""
+
 import os
 import sys
 import argparse
@@ -7,7 +18,7 @@ import numpy as np
 import pandas as pd
 
 import anatomist.api as ana
-from soma.qt_gui.qtThread import QtThreadCall
+#from soma.qt_gui.qtThread import QtThreadCall
 from soma.qt_gui.qt_backend import Qt
 from soma import aims
 
@@ -99,8 +110,15 @@ def main():
 
     args = parser.parse_args()
 
+    app = Qt.QApplication.instance()
+    if app is None:
+        app = Qt.QApplication(sys.argv)
+
     # Load sorted projections (a .csv file)
     sorted_projections = pd.read_csv(args.sorted_projections)
+
+    if 'IID' in sorted_projections:
+        sorted_projections = sorted_projections.set_index('IID')
 
     average_dic = {}
     block = a.createWindowsBlock(args.nb_columns)
@@ -124,16 +142,21 @@ def main():
         average_dic[f'rvol{i}'] = a.fusionObjects(objects=[average_dic[f'a_sum_vol{i}']], method='VolumeRenderingFusionMethod')
         average_dic[f'rvol{i}'].releaseAppRef()
 
-        # Create and set custom palettes
-        for palette_name in ['VR-palette', 'slice-palette']:
-            pal = a.createPalette(palette_name)
-            pal.header()['palette_gradients'] = '0;0.459574;0.497872;0.910638;1;1#0;0;0.52766;0.417021;1;1#0;0.7;1;0#0;0;0.0297872;0.00851064;0.72766;0.178723;0.957447;0.808511;1;1'
-            build_gradient(pal)
-            average_dic[f'a_sum_vol{i}'].setPalette(palette_name)
+        # custom palette
+        pal = a.createPalette('VR-palette')
+        pal.header()['palette_gradients'] = '0;0.459574;0.497872;0.910638;1;1#0;0;0.52766;0.417021;1;1#0;0.7;1;0#0;0;0.0297872;0.00851064;0.587179;0.0666667;0.838462;0.333333;0.957447;0.808511;1;1'
+        build_gradient(pal)
+        average_dic[f'rvol{i}'].setPalette('VR-palette', minVal=0.05, maxVal=0.35, absoluteMode=True)
+        pal2 = a.createPalette('slice-palette')
+        pal2.header()['palette_gradients'] = '0;0.459574;0.497872;0.910638;1;1#0;0;0.52766;0.417021;1;1#0;0.7;1;0#0;0;0.0297872;0.00851064;0.587179;0.0666667;0.838462;0.333333;0.957447;0.808511;1;1'
+        build_gradient(pal2)
+        average_dic[f'a_sum_vol{i}'].setPalette('slice-palette')
 
         # Create a 3D window and add the volume rendering object
         average_dic[f'wvr{i}'] = a.createWindow('3D', block=block)
         average_dic[f'wvr{i}'].addObjects(average_dic[f'rvol{i}'])
+
+    app.exec_()  # Start the Qt event loop
 
 
 if __name__ == "__main__":
