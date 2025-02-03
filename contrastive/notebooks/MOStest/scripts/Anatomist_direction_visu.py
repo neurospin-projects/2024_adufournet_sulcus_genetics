@@ -52,7 +52,7 @@ def build_gradient(pal):
     pal.update()
 
 
-def buckets_average(subject_id_list, dataset_name_list, region, side, kernel_size=2, sigma=1):
+def buckets_average(subject_id_list, dataset_name_list, region, side):
     """Computes the average bucket volumes for a list of subjects."""
     dic_vol = {}
     dim = 0
@@ -124,7 +124,7 @@ def main():
     block = a.createWindowsBlock(args.nb_columns)
 
     # Define the step size for processing projections
-    step = 200
+    step = 20
     dic_packages = {}
     for i in range(0, len(sorted_projections), step):
         list_idx = sorted_projections.index[i:i + step].to_numpy()
@@ -135,7 +135,7 @@ def main():
 
     # Process each package of subjects
     for i in range(0, n_pack, max(n_pack // (3 * args.nb_columns - 1), 1)):
-        sum_vol = buckets_average(dic_packages[i], list_database, args.region, args.side, sigma=1)
+        sum_vol = buckets_average(dic_packages[i], list_database, args.region, args.side)
         average_dic[f'a_sum_vol{i}'] = a.toAObject(sum_vol)
         average_dic[f'a_sum_vol{i}'].setPalette(minVal=0, absoluteMode=True)
 
