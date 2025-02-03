@@ -21,3 +21,4 @@ Some other past or present contributors are:
 
 * Julien Laval
 * Joël Chavas
+* Vincent Frouin
