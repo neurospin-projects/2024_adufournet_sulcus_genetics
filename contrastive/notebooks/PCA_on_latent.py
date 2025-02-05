@@ -9,7 +9,7 @@ from sklearn.decomposition import PCA
 #base_path = '/neurospin/dico/adufournet/mycode/Output/2025-01-22/09-35-58_201/UKB40_trained_on_WBA_embeddings/full_embeddings.csv'
 base_path = '/neurospin/dico/adufournet/mycode/Output/ORBITAL_*/*/trained_on_UKB36WBA_random_embeddings/full_embeddings.csv'
 
-#to know if the PCA must be done with a fit only on the WBA subjects, and a transform for bothe the WBA and the nWBA subjects.
+#to know if the PCA must be done with a fit only on the WBA subjects, and a transform for both the WBA and the nWBA subjects.
 WBA_stratification = True
 path_to_WBAstrat = '/volatile/ad279118/Irene/Stratification/list_ID_WBA.csv'
 
