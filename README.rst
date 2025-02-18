@@ -42,7 +42,6 @@ The subjects ID are in the IID column (IID).
 The phenotype is in the column projection.
 The 200-subjects averages will be plot on 2 columns, 1 row.
 
-
 .. code-block:: shell
    bv bash
    cd notebooks
@@ -59,4 +58,6 @@ To access to the code used to run the MOSTest, go to the MOSTest folder.
 
 .. code-block:: shell
     cd notebooks/MOStest
+
+Also
 
