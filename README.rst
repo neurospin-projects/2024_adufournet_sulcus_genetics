@@ -37,7 +37,7 @@ Then, install a virtual environment through the following command lines:
 Note that you might need a `BrainVISA <https://brainvisa.info>`_ environment to run
 some of the functions or notebooks.
 
-For instance, to compute the average of the sulcal shape given a phenotype., you need the BrainVISA environment, that you can run with `bv bash`.
+For instance, to compute the average of the sulcal shape given a phenotype., you need the BrainVISA environment, that you can run with bv bash.
 In this example, we work with the number of allele C as the phenotype.
 The region is the anterior cingulate cortex (CINGULATE.).
 The hemisphere is the left (L).
