@@ -78,7 +78,7 @@ To access the code used to run the MOSTest, go to the `TGCC_scripts <https://git
 To observe the masked sulcal skeleton subject by subject
 ---------------------------
 
-In a BrainVISA environment (bv bash), use the notebook `UKKB_crops.ipynb <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/blob/ad279118/notebooks/Figures/UKB_crops.ipynb>`_ to open subjects' sulcal skeleton.
+In a BrainVISA environment (bv bash), use the notebook `UKB_crops.ipynb <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/blob/ad279118/notebooks/Figures/UKB_crops.ipynb>`_ to open subjects' sulcal skeleton.
 
 
 
