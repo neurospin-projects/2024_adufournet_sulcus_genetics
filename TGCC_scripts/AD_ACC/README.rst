@@ -1,7 +1,7 @@
 Scripts Folder Overview
 =============
 
-This directory contains the necessary scripts and configuration files for running your pipeline. Below is a description of each file and its purpose.
+This directory contains the necessary scripts and configuration files for running the pipeline. Below is a description of each file and its purpose.
 
 File Structure
 -------------------
@@ -75,7 +75,3 @@ Steps to Follow
    - Copy the first three lines of `Cycle.txt` into your terminal to set necessary variables.
    - Perform a dry run to check for missing files and review the rules and commands that will be applied.
    - If the dry run is successful and free of errors, submit the job using the `ccc_msub` command.
-
-By following these steps and ensuring the configurations are correctly set, you should be able to run the pipeline smoothly.
-
----
