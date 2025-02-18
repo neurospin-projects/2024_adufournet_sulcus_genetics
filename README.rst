@@ -3,10 +3,7 @@ Evaluation and interpretation of sulcus genetics
 ###########################################################################
 
 This repository is based on https://github.com/neurospin-projects/2023_jlaval_STSbabies. 
-It aims to use the embeddings of the self-supervised deep learning pipepline to preterm-specific folding pattern analysis.
-Especially on sulcus genetics.
-Official Pytorch implementation for Unsupervised Learning and Cortical Folding (`paper <https://openreview.net/forum?id=ueRZzvQ_K6u>`_).
-
+It aims to use the embeddings of the self-supervised deep learning pipepline to perform folding pattern analysis, especially in relation to genetics.
 
 Dependencies
 ------------
@@ -37,7 +34,7 @@ Then, install a virtual environment through the following command lines:
 Note that you might need a `BrainVISA <https://brainvisa.info>`_ environment to run
 some of the functions or notebooks.
 
-For instance, to compute the average of the sulcal shape given a phenotype., you need the BrainVISA environment, that you can run with bv bash.
+For instance, to compute the average of the sulcal shape given a phenotype., you need the BrainVISA environment.
 In this example, we work with the number of allele C as the phenotype.
 The region is the anterior cingulate cortex (CINGULATE.).
 The hemisphere is the left (L).
