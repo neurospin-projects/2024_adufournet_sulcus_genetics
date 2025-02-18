@@ -4,6 +4,8 @@ Genotyping tools -- Example of usage
 Manhattan plot of one or several models
 --------------------------
 
+To compute a Manhattan plot without using FUMA, for a summary statistic given by the MOSTtest, you can use:
+
 .. code-block:: shell
 
 python3 multi_model_manhattan_plot.py \
