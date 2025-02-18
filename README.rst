@@ -57,8 +57,8 @@ The 200-subjects averages will be plot on 2 columns, 1 row.
 
 To access the code used to run the MOSTest, go to the `TGCC_scripts <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/TGCC_scripts>`_ folder.
 
-You can find the code used for the Anterior Cingulate Cortex genetic analysis in the `AD_ACC <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/TGCC_scripts>`_ folder,  
-relying on tools that can be found in the `Tools <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/Tools>`_ folder.
+You can find the code used for the Anterior Cingulate Cortex genetic analysis in the `AD_ACC <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/TGCC_scripts/AD_ACC>`_ folder,  
+relying on tools that can be found in the `Tools <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/TGCC_scripts/Tools>`_ folder.
 
 
 .. code-block:: shell
