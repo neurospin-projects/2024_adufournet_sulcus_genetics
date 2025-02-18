@@ -32,7 +32,6 @@ if __name__ == '__main__':
     pheno_path = args.pheno
     sumstats_folder = args.sumstats_folder
     output_folder = args.output_folder
- 1
 
     # Extract the {ref} prefix from the phenotype file name
     # ref_prefix = os.path.basename(pheno_path).split('_pheno_pre_residualized.txt')[0]
