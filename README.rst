@@ -73,8 +73,6 @@ The 200-subjects averages will be plot on 2 columns, 1 row.
                                                     -l 1 \
                                                     -t 200 
 
-To access the code used to run the MOSTest, go to the `TGCC_scripts <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/TGCC_scripts>`_ folder.
-
 To observe the masked sulcal skeleton subject by subject
 ---------------------------
 
