@@ -43,6 +43,7 @@ The phenotype is in the column projection.
 The 200-subjects averages will be plot on 2 columns, 1 row.
 
 .. code-block:: shell
+
    bv bash
    cd notebooks
    python3 MOStest/Interpretation/Moving_average.py -p path_to_regression_on_rs4842267_C.csv \
@@ -57,6 +58,7 @@ The 200-subjects averages will be plot on 2 columns, 1 row.
 To access to the code used to run the MOSTest, go to the MOSTest folder.
 
 .. code-block:: shell
+
     cd notebooks/MOStest
 
 Also
