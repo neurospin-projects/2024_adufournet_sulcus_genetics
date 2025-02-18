@@ -8,7 +8,6 @@ It aims to use the embeddings of the self-supervised deep learning pipepline to 
 Dependencies
 ------------
 - python >= 3.6
-- pytorch >= 1.4.0
 - numpy >= 1.16.6
 - pandas >= 0.23.3
 
