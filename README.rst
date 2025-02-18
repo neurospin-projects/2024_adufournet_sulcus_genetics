@@ -41,8 +41,15 @@ To perform GWAS and the MOSTest on a High-performance computing (HPC) cluster (T
 You can find the code used for the Anterior Cingulate Cortex genetic analysis in the `AD_ACC <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/TGCC_scripts/AD_ACC>`_ folder,  
 relying on tools that can be found in the `Tools <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/TGCC_scripts/Tools>`_ folder.
 
+To use a classifier on the left Anterior Cingulate Cortex (ACC) to detect the ParaCingulate Sulcus (PCS)
+---------------------------
 
-Perform an average on the masked sulcal skeleton
+The notebook `Left_Classifier <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/blob/ad279118/notebooks/LEFT_CINGULATE/SVM_classifier_on_left_cingulate_dim256.ipynb>`_ allows 
+a generalization of the ACC dataset classification to the UKBioBank subjects.
+Same idea can be found for the right hemisphere at `Right_Classifier <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/blob/ad279118/notebooks/RIGHT_CINGULATE/SVM_classifier_on_right_cingulate_dim256.ipynb>`_ .
+
+
+To perform an average on the masked sulcal skeleton
 ---------------------------
 
 For instance, to compute the average of the sulcal shape given a phenotype, you need the BrainVISA environment.
@@ -68,7 +75,7 @@ The 200-subjects averages will be plot on 2 columns, 1 row.
 
 To access the code used to run the MOSTest, go to the `TGCC_scripts <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/TGCC_scripts>`_ folder.
 
-Observe the masked sulcal skeleton subject by subject
+To observe the masked sulcal skeleton subject by subject
 ---------------------------
 
 In a BrainVISA environment (bv bash), use the notebook `UKKB_crops.ipynb <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/blob/ad279118/notebooks/Figures/UKB_crops.ipynb>`_ to open subjects' sulcal skeleton.
