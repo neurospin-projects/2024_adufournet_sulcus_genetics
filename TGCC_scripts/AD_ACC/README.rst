@@ -64,14 +64,14 @@ Steps to Follow
 -------------------
 
 1. **Set Up Directories**:
-   - Edit the `Path_tskcfg.yml` file to specify paths for inputs, outputs, logs, and temporary directories.
-   - Create these directories according to your plan.
+     - Edit the `Path_tskcfg.yml` file to specify paths for inputs, outputs, logs, and temporary directories.
+     - Create these directories according to your plan.
 
 2. **Prepare Main Script**:
-   - Open `Main_script.slurm` and verify or modify the job name, output paths, `root_dir`, and paths to the `.smk`, `.yml`, and `.json` files.
-   - Ensure all mentioned directories exist and are correctly structured.
+     - Open `Main_script.slurm` and verify or modify the job name, output paths, `root_dir`, and paths to the `.smk`, `.yml`, and `.json` files.
+     - Ensure all mentioned directories exist and are correctly structured.
 
 3. **Configure Cycle**:
-   - Copy the first three lines of `Cycle.txt` into your terminal to set necessary variables.
-   - Perform a dry run to check for missing files and review the rules and commands that will be applied.
-   - If the dry run is successful and free of errors, submit the job using the `ccc_msub` command.
+     - Copy the first three lines of `Cycle.txt` into your terminal to set necessary variables.
+     - Perform a dry run to check for missing files and review the rules and commands that will be applied.
+     - If the dry run is successful and free of errors, submit the job using the `ccc_msub` command.
