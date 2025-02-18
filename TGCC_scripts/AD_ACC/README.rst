@@ -23,10 +23,10 @@ File Descriptions
 --------------------------
 - **Purpose**: Defines paths for input directories, output directories, log directories, and temporary directories.
 - **Instructions**: 
-  - Edit this file to specify where you want to load your files.
-  - If you want to use the parallel model, then, you have to write down in models (the list of models) the relative path (from a directory data) that lead to the infile. All the infiles must have the same name.
-  - Besides, if you don't want to calculate the genomic information because you always work on the same cohort, then use the "tempodirgen" path, and comment the GWA rules. You also have to comment or uncomment the lines that were linked to the relative paths.
-  - Create the directories according to your plan before running the code.
+    - Edit this file to specify where you want to load your files.
+    - If you want to use the parallel model, then, you have to write down in models (the list of models) the relative path (from a directory data) that lead to the infile. All the infiles must have the same name.
+    - Besides, if you don't want to calculate the genomic information because you always work on the same cohort, then use the "tempodirgen" path, and comment the GWA rules. You also have to comment or uncomment the lines that were linked to the relative paths.
+    - Create the directories according to your plan before running the code.
 
 2. `Main_script.slurm`
 --------------------------
@@ -44,21 +44,21 @@ File Descriptions
 --------------------------
 - **Purpose**: Contains paths leading to the Snakemake `Pipeline.smk`, the `.slurm`, and the `.yml` files. Allows a dry run (when paths are correct), and/or a job submission.
 - **Instructions**:
-  - Copy and paste the first three lines of `Cycle.txt` into your terminal to define the variables for a dry run.
-  - Run the dry run to identify any missing files and to see which rules will be applied along with their commands.
-  - If no errors occur, submit the jobs using the `ccc_msub` command.
+    - Copy and paste the first three lines of `Cycle.txt` into your terminal to define the variables for a dry run.
+    - Run the dry run to identify any missing files and to see which rules will be applied along with their commands.
+    - If no errors occur, submit the jobs using the `ccc_msub` command.
 
 4. `Pipeline.smk`
 --------------------------
 - **Purpose**: The main Snakemake pipeline file, which contains the output file paths needed for the study, and the necessary commands to achieve it.
 - **Instructions**:
-  - No changes are needed if your files are in the correct format and located in the correct directories as specified in `Path_tskcfg.yml`.
+    - No changes are needed if your files are in the correct format and located in the correct directories as specified in `Path_tskcfg.yml`.
 
 5. `Cluster_params.json`
 --------------------------
 - **Purpose**: Defines the number of threads, memory, and time required for each rule in the `Pipeline.smk` file.
 - **Instructions**:
-  - Adjust these parameters as necessary to match your resource requirements for each pipeline rule.
+    - Adjust these parameters as necessary to match your resource requirements for each pipeline rule.
 
 Steps to Follow
 -------------------
