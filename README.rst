@@ -35,7 +35,7 @@ Note that you might need a `BrainVISA <https://brainvisa.info>`_ environment to 
 some of the functions or notebooks.
 
 
-To perform GWAS and the MOSTest on High-performance computing (HPC) clusters
+To perform GWAS and the MOSTest on a High-performance computing (HPC) cluster (TGCC in this case)
 ---------------------------
 
 You can find the code used for the Anterior Cingulate Cortex genetic analysis in the `AD_ACC <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/TGCC_scripts/AD_ACC>`_ folder,  
