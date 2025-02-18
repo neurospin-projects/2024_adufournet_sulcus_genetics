@@ -51,7 +51,7 @@ Same idea can be found for the right hemisphere at `Right_Classifier <https://gi
 To perform an average on the masked sulcal skeleton
 ---------------------------
 
-For instance, to compute the average of the sulcal shape given a phenotype with `Average <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/blob/ad279118/notebooks/MOStest/Interpretation/Moving_average.py, you need the BrainVISA environment>`_.
+For instance, to compute the average of the sulcal shape given a phenotype with `Average <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/blob/ad279118/notebooks/MOStest/Interpretation/Moving_average.py>`_, you need the BrainVISA environment.
 In this example, we work with the number of allele C as the phenotype.
 The region is the anterior cingulate cortex (CINGULATE.).
 The hemisphere is the left (L).
