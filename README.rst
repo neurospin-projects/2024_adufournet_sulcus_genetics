@@ -55,11 +55,13 @@ The 200-subjects averages will be plot on 2 columns, 1 row.
                                                     -l 1 \
                                                     -t 200 
 
-To access to the code used to run the MOSTest, go to the MOSTest folder.
+To access to the code used to run the MOSTest, go to the TGCC_scripts folder.
+You can find the code used for the Anterior Cingulate Cortex genetic analysis in the AD_ACC folder,
+relying on tolls that can be found in the Tools folder.
 
 .. code-block:: shell
 
-    cd notebooks/MOStest
+    cd TGCC_scripts
 
-Also
+
 
