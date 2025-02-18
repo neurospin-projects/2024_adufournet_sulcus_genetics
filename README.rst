@@ -34,6 +34,14 @@ Then, install a virtual environment through the following command lines:
 Note that you might need a `BrainVISA <https://brainvisa.info>`_ environment to run
 some of the functions or notebooks.
 
+
+To perform GWAS and the MOSTest on High-performance computing (HPC) clusters
+---------------------------
+
+You can find the code used for the Anterior Cingulate Cortex genetic analysis in the `AD_ACC <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/TGCC_scripts/AD_ACC>`_ folder,  
+relying on tools that can be found in the `Tools <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/TGCC_scripts/Tools>`_ folder.
+
+
 Perform an average on the masked sulcal skeleton
 ---------------------------
 
@@ -64,14 +72,6 @@ Observe the masked sulcal skeleton subject by subject
 ---------------------------
 
 In a BrainVISA environment (bv bash), use the notebook `UKKB_crops.ipynb <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/blob/ad279118/notebooks/Figures/UKB_crops.ipynb>`_ to open subjects' sulcal skeleton.
-
-You can find the code used for the Anterior Cingulate Cortex genetic analysis in the `AD_ACC <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/TGCC_scripts/AD_ACC>`_ folder,  
-relying on tools that can be found in the `Tools <https://github.com/neurospin-projects/2024_adufournet_sulcus_genetics/tree/ad279118/TGCC_scripts/Tools>`_ folder.
-
-
-.. code-block:: shell
-
-    cd TGCC_scripts
 
 
 
