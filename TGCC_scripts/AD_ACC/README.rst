@@ -42,7 +42,7 @@ File Descriptions
 
 3. `Cycle.txt`
 --------------------------
-- **Purpose**: Contains paths leading to the Snakemake `Pipeline.smk` file.
+- **Purpose**: Contains paths leading to the Snakemake `Pipeline.smk`, the `.slurm`, and the `.yml` files. Allows a dry run (when paths are correct), and/or a job submission.
 - **Instructions**:
   - Copy and paste the first three lines of `Cycle.txt` into your terminal to define the variables for a dry run.
   - Run the dry run to identify any missing files and to see which rules will be applied along with their commands.
@@ -50,7 +50,7 @@ File Descriptions
 
 4. `Pipeline.smk`
 --------------------------
-- **Purpose**: The main Snakemake pipeline file.
+- **Purpose**: The main Snakemake pipeline file, which contains the output file paths needed for the study, and the necessary commands to achieve it.
 - **Instructions**:
   - No changes are needed if your files are in the correct format and located in the correct directories as specified in `Path_tskcfg.yml`.
 
