@@ -1,0 +1,14 @@
+ROOT=/ccc/workflash/cont003/n4h00001/n4h00001/25irene_AD_CINGULATE_val/scripts
+
+SNAKEFILE=$ROOT/Pipeline_CINGULATE_L_R.smk
+CONFIGFILE=$ROOT/Path_tskcfg_CINGULATE_L_R.yml
+SUBM=$ROOT/Main_script_CINGULATE_L_R.slurm
+
+# to dryn run the current snakemakefile
+snakemake -pn   -s ${SNAKEFILE}   --configfile ${CONFIGFILE}   --verbose --printshellcmds --reason   --stats stats.json   --cores 1
+
+
+# batch 
+ccc_msub ${SUBM}; watch -n 120 ccc_mpp -n -u $USER
+
+

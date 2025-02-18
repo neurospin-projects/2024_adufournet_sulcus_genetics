@@ -1,0 +1,20 @@
+infile: 42433_999varPC
+
+modeln: [CINGULATE_left/09-35-58_201, CINGULATE_right/14-27-09_138]
+
+dataphe: /ccc/workflash/cont003/n4h00001/n4h00001/25irene_AD_CINGULATE_val/data/ChampollionV0
+datagen: /ccc/workflash/cont003/n4hukb/n4hukb/ukb/genetic/ukb_genotype_called/CALL_DATA
+dataimp: /ccc/workflash/cont003/n4hukb/n4hukb/ukb/genetic/ukb_genotype_imputed/IMPUTED_DATA
+logdir:  /ccc/workflash/cont003/n4h00001/n4h00001/25irene_AD_CINGULATE_val/logs/sm/2
+tempodir: /ccc/scratch/cont003/n4h00001/dufourna/25irene_AD_CINGULATE_val/ChampollionV0
+tempodirlog: /ccc/scratch/cont003/n4h00001/dufourna/logs/sm/2
+tempodirgen: /ccc/scratch/cont003/n4h00001/dufourna/brainMOSTEST/42433_subjects_GENETICS
+
+
+which_ancestry: [white.British.ancestry, non.white.British.ancestry]
+chrn:  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+threads: 8
+imputemaf: 0.05
+
+most_python_scripts: /ccc/workflash/cont003/n4h00001/n4h00001/MOSTEST
+outdir: /ccc/workflash/cont003/n4h00001/n4h00001/25irene_AD_CINGULATE_val/results/ChampollionV0

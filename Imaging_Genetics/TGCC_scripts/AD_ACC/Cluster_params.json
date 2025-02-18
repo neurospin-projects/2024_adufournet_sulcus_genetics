@@ -1,0 +1,136 @@
+{
+    "__default__" :
+    {
+        "jobname"   : "{rule}.{wildcards}",
+        "outname"   : "/ccc/workflash/cont003/n4h00001/n4h00001/25irene_AD_CINGULATE_val/logs/sm/1/{rule}_{wildcards}_%j.out",
+        "errname"   : "/ccc/workflash/cont003/n4h00001/n4h00001/25irene_AD_CINGULATE_val/logs/sm/1/{rule}_{wildcards}_%j.err",
+        "threads"   : "1",
+        "tasks"     : "1",
+        "memory"    : "",
+        "account"   : "gen13800",
+        "partition" : "rome",
+        "qos"       : "",
+	"time"      : "86400",
+        "email"     : "",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    },
+    "PRL_POP" :
+    {
+        "tasks"     : "1",
+        "threads"   : "1",
+	"time"      : "450",
+        "memory"    : "1781",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    },
+    "PRL_DUMP" :
+    {
+        "tasks"     : "1",
+        "threads"   : "1",
+	"time"      : "450",
+        "memory"    : "1781",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    },
+    "GWA_DEC" :
+    {
+        "tasks"     : "1",
+        "threads"   : "16",
+	"time"      : "3600",
+        "memory"    : "1781",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    },
+    "GWA_MAF" :
+    {
+        "tasks"     : "1",
+        "threads"   : "16",
+	"time"      : "1800",
+        "memory"    : "1781",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    },
+    "GWA_AGG" :
+    {
+        "tasks"     : "1",
+        "threads"   : "32",
+	"time"      : "900",
+        "memory"    : "1781",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    },
+    "GWA_CMP" :
+    {
+        "tasks"     : "1",
+        "threads"   : "16",
+	"time"      : "1800",
+        "memory"    : "1781",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    },
+    "CKP" :
+    {
+        "tasks"     : "1",
+        "threads"   : "1",
+	"time"      : "450",
+        "memory"    : "1781",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    },
+    "PreResidualizePheno":
+    {
+        "tasks"	    : "1",
+        "threads"   : "4",
+        "time"      : "450",
+        "memory"    : "1781",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    },
+    "FilterGenetics":
+    {
+        "tasks"	    : "1",
+        "threads"   : "8",
+        "time"      : "450",
+        "memory"    : "1781",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    },
+    "ReOrderPheno":
+    {
+        "tasks"	    : "1",
+        "threads"   : "64",
+        "time"      : "7200",
+        "memory"    : "1781",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    },
+    "MOSTest":
+    {
+        "tasks"	    : "1",
+        "threads"   : "96",
+        "time"      : "21600",
+        "memory"    : "1781",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    },
+    "mat_to_txt1":
+    {
+        "tasks"	    : "1",
+        "threads"   : "64",
+        "time"      : "900",
+        "memory"    : "1781",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    },
+    "mat_to_txt2":
+    {
+        "tasks"	    : "1",
+        "threads"   : "16",
+        "time"      : "900",
+        "memory"    : "1781",
+        "extra"     : "",
+        "extra_msub": "-m workflash,store,scratch"
+    }
+}
+
