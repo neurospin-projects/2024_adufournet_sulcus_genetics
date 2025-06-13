@@ -4,6 +4,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, PageBreak, Table, TableStyle
 from reportlab.platypus import Image as ReportLabImage
+from collections import Counter
 import os
 import pandas as pd
 import requests
@@ -21,14 +22,15 @@ def get_gene_symbol(ensembl_id):
     else:
         return "Symbol not found"
 
-path_to_Champollion = "/home/ad279118/tmp1/Champollion_V1_32"
-Champollion_version = "32dim_noPCA_40genPC"
+path_to_Champollion = "/home/ad279118/tmp1"
+Champollion_version = "32dim_noPCA_10genPC"
 nb_dim=  32
-PCA = "without PCA"
+PCA = "without PCA" #reducting the latent space to 32 dimensions
+folder = "NOPCA" #32PCs
 path_to_model="/neurospin/dico/data/deep_folding/current/models/Champollion_V1_after_ablation"
 # "/neurospin/dico/data/deep_folding/current/models/Champollion_V1_after_ablation"
 # "/neurospin/dico/data/deep_folding/current/models/Champollion_V1_after_ablation_latent_256"
-nb_geneticPC=40
+nb_geneticPC=10
 
 # Setup for the report
 with open(f"{path_to_Champollion}/list_model.txt") as f:
@@ -72,11 +74,19 @@ style_title = ParagraphStyle(
     textColor=colors.black
 )
 
+style_subtitle = ParagraphStyle(
+    "Title",
+    fontName="Helvetica",
+    fontSize=12,
+    spaceAfter=10,
+    textColor=colors.black
+)
+
 # Define a style for the content
 style_normal = getSampleStyleSheet()["Normal"]
 
 # Main report title
-main_title = f"Champollion V1 results in {nb_dim} dimensions, {PCA}"
+main_title = f"Champollion V1 (initialy {nb_dim} dimensions) results, {PCA}"
 elements.append(Paragraph(main_title, ParagraphStyle(
     name="MainTitle",
     fontName="Helvetica-Bold",
@@ -123,7 +133,7 @@ Le nom de la région d'intérêt, suivie du modèle qui a été utilisé pour la
    Les ensembles de gènes sont considérés comme associés de manière significative à la région lorsque p-value < 2e-6 (0.05/17009), après correction de Bonferroni  (17009 ensembles.)
 
 """.format(path_to_model= path_to_model,
-    dim_formula="dim_i ~ Age +  C(Sex) + I(Age**2) + Age:C(Sex) + Cheadle + Newcastle + Array + " + " + ".join(
+    dim_formula="dim_i ~ Age +  C(Sex) + I(Age**2) + Age:C(Sex) + Cheadle + Newcastle + Reading + Bristol + Array + " + " + ".join(
         [f"PC{i:02d}" for i in range(1, nb_geneticPC + 1)]
     )
 )
@@ -131,12 +141,92 @@ Le nom de la région d'intérêt, suivie du modèle qui a été utilisé pour la
 elements.append(Paragraph(methodology_text, style_normal))
 elements.append(PageBreak())
 
+# Initialize an empty list to store the heritability data
+title_heritability = Paragraph("Maximum Heritability Estimates (h2) for Brain Regions", style_subtitle)
+elements.append(title_heritability)
+heritability_data = []
+
+for region_model in regions_models:
+    region, model = region_model.split('/')
+    base_path = os.path.expanduser(f"{path_to_Champollion}/{region}/{model}/{folder}/white.British.ancestry")
+    h2_path = os.path.join(base_path, "h2_summary.tsv")
+    
+    if os.path.exists(h2_path):
+        h2_df = pd.read_csv(h2_path, sep="\t")
+        if 'pheno' in h2_df.columns and 'h2' in h2_df.columns:
+            # Extract the dimension with the highest heritability
+            max_h2_row = h2_df.loc[h2_df['h2'].idxmax()]
+            heritability_data.append([region, max_h2_row['pheno'], max_h2_row['h2']])
+
+# Create a DataFrame for the heritability data
+heritability_df = pd.DataFrame(heritability_data, columns=['Region', 'Most Heritable Dimension', 'h2'])
+heritability_df = heritability_df.sort_values(by='h2')
+
+heritability_table_data = [heritability_df.columns.tolist()] + heritability_df.values.tolist()
+heritability_table = Table(heritability_table_data, colWidths=[200, 130, 80])
+heritability_table.setStyle(TableStyle([
+    ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+    ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+    ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+    ('FONTSIZE', (0, 0), (-1, -1), 6),
+    ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+    ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
+]))
+elements.append(heritability_table)
+elements.append(PageBreak())
+
+title_top_shared_genes = Paragraph("Top 30 most shared genes across brain regions", style_title)
+elements.append(title_top_shared_genes)
+gene_counter = Counter()
+bonferroni_threshold = 0.05 / 19264
+
+for region_model in regions_models:
+    region, model = region_model.split('/')
+    base_path = os.path.expanduser(f"{path_to_Champollion}/{region}/{model}/{folder}/white.British.ancestry")
+    magma_path = os.path.join(base_path, "MAGMA")
+    magma_genes_file = os.path.join(magma_path, "magma.genes.out")
+    
+    if os.path.exists(magma_genes_file):
+        print(f"Processing MAGMA genes for {region_model}...")
+        genes_df = pd.read_csv(magma_genes_file, sep="\s+", comment="#")
+        
+        # Filter genes by the Bonferroni-corrected p-value threshold
+        significant_genes = genes_df[genes_df["P"] < bonferroni_threshold]
+        
+        # Update the gene counter with the significant genes from this region
+        gene_counter.update(significant_genes["GENE"])
+
+# Convert the Counter to a DataFrame for easier manipulation
+gene_counts_df = pd.DataFrame(gene_counter.items(), columns=["Gene", "Count"])
+
+# Sort the DataFrame by the count in descending order and select the top 30
+top_shared_genes = gene_counts_df.sort_values(by="Count", ascending=False).head(30)
+
+genes_columns = list(top_shared_genes.columns)
+top_shared_genes['Symbol'] = top_shared_genes['Gene'].apply(lambda x: get_gene_symbol(x))
+top_shared_genes = top_shared_genes[['Symbol']+genes_columns]
+data = [list(top_shared_genes.columns)] + top_shared_genes.values.tolist()
+
+table = Table(data, colWidths=[50, 100, 35])
+table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, -1), 6),  
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
+        ]))
+elements.append(table)
+elements.append(PageBreak())
+
 # Loop through regions and models to add sections
 for region_model in regions_models:
     region, model = region_model.split('/')
     print(region)
     print(model)
-    base_path = os.path.expanduser(f"{path_to_Champollion}/{region}/{model}/white.British.ancestry")
+    base_path = os.path.expanduser(f"{path_to_Champollion}/{region}/{model}/{folder}/white.British.ancestry")
     magma_path = os.path.join(base_path, "MAGMA")
     
     # Title for each region-model
@@ -149,6 +239,12 @@ for region_model in regions_models:
     if os.path.exists(h2_path):
         print("Processing h2...")
         h2_df = pd.read_csv(h2_path, sep="\t")
+    
+        if 'pheno' in h2_df.columns:
+            h2_df['pheno_num'] = h2_df['pheno'].str.extract(r'dim(\d+)').astype(float)
+            h2_df = h2_df.sort_values(by='pheno_num')
+            h2_df = h2_df.drop(columns=['pheno_num'])  # optional: clean up
+        
         data = [list(h2_df.columns)] + h2_df.values.tolist()
 
         table = Table(data, colWidths=[40, 40, 70, 70, 70])
