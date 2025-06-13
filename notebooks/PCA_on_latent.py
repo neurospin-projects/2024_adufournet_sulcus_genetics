@@ -7,10 +7,10 @@ from sklearn.decomposition import PCA
 
 
 #base_path = '/neurospin/dico/adufournet/mycode/Output/2025-01-22/09-35-58_201/UKB40_trained_on_WBA_embeddings/full_embeddings.csv'
-base_path = '/neurospin/dico/adufournet/mycode/Output/ORBITAL_*/*/trained_on_UKB36WBA_random_embeddings/full_embeddings.csv'
-
+#base_path = '/neurospin/dico/adufournet/mycode/Output/ORBITAL_*/*/trained_on_UKB36WBA_random_embeddings/full_embeddings.csv'
+base_path = '/home/ad279118/tmp1/data/Champollion_V1_32/*/*/full_embeddings.csv'
 #to know if the PCA must be done with a fit only on the WBA subjects, and a transform for both the WBA and the nWBA subjects.
-WBA_stratification = True
+WBA_stratification = False
 path_to_WBAstrat = '/volatile/ad279118/Irene/Stratification/list_ID_WBA.csv'
 
 
@@ -18,16 +18,34 @@ verbose = False
 # Use glob to find all matching files
 file_paths = glob.glob(base_path)
 
-variance = 0.999
 
-var = str(variance).split('.')[1]
+# If the number of principal components is depending on the percentage of total variance
+variance_bool = True
+variance = 1
+if variance != 1:
+    var = str(variance).split('.')[1]
+elif variance==1:
+    var=100
+
+# If the number of principal components is given
+nb_pc_bool = True
+
+
+# Each dimension in transformed to have a 0 mean and a 1 std
+standard_scaler = True
+
 
 for file in file_paths:
     initial_path = file.replace('/full_embeddings.csv', '')
-    if not glob.glob(f'{initial_path}/42433_{var}varpc.csv'):
+    if not glob.glob(f'{initial_path}/42433_32pc.csv'): #f'{initial_path}/42433_{var}varpc.csv'
         print(f'Working with file: {file}')
         print("\n", file)
         embeddings_UKB = pd.read_csv(file)
+
+        if standard_scaler:
+            list_columns = list(embeddings_UKB.columns)
+            list_columns.remove('ID')
+            embeddings_UKB[list_columns] = (embeddings_UKB[list_columns] - embeddings_UKB[list_columns].mean(axis=0))/embeddings_UKB[list_columns].std(axis=0)
 
         if WBA_stratification:
             list_WBA_ID = pd.read_csv(path_to_WBAstrat,names=['ID'],  header=None)
@@ -41,7 +59,7 @@ for file in file_paths:
             pca = PCA(n_components=n_components)
             pca.fit(WBA_only)
             nb_dim_to_keep = (np.cumsum(pca.explained_variance_ratio_) < variance).sum()+1
-            pca = PCA(n_components=nb_dim_to_keep)
+            pca = PCA(n_components=nb_dim_to_keep) #nb_dim_to_keep
             pca.fit(WBA_only)
 
         else:
@@ -51,7 +69,7 @@ for file in file_paths:
             pca = PCA(n_components=n_components)
             pca.fit(embeddings_UKB)
             nb_dim_to_keep = (np.cumsum(pca.explained_variance_ratio_) < variance).sum()+1
-            pca = PCA(n_components=nb_dim_to_keep)
+            pca = PCA(n_components=32) #nb_dim_to_keep
             pca.fit(embeddings_UKB)
 
         if verbose:
@@ -80,9 +98,9 @@ for file in file_paths:
             plt.show()
         
         # PCA trnsform the whole dataset (check if fit on WBA only)
-        pca_embeddings_UKB = pd.DataFrame(pca.transform(embeddings_UKB), columns=[f'dim{i}' for i in range(1,nb_dim_to_keep+1)],  index=embeddings_UKB.index)
+        pca_embeddings_UKB = pd.DataFrame(pca.transform(embeddings_UKB), columns=[f'dim{i}' for i in range(1,32+1)],  index=embeddings_UKB.index) #nb_dim_to_keep
         print(pca_embeddings_UKB.head())
         nb_subjects = len(pca_embeddings_UKB)
-        path_to_save=f'{initial_path}/{nb_subjects}_{var}varpc.csv'
-        #pca_embeddings_UKB.to_csv(path_to_save)
+        path_to_save=f'{initial_path}/{nb_subjects}_stddim_32pc.csv' #f'{initial_path}/{nb_subjects}_{var}varpc.csv'
+        pca_embeddings_UKB.to_csv(path_to_save)
         print('File saved:', path_to_save)
