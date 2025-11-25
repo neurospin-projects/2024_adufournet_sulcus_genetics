@@ -22,18 +22,19 @@ def get_gene_symbol(ensembl_id):
     else:
         return "Symbol not found"
 
-path_to_Champollion = "/home/ad279118/tmp1"
-Champollion_version = "32dim_noPCA_10genPC"
+path_to_Champollion = "/home/ad279118/tmp"
+Champollion_version = "32PCs_withPCA_10genPC_TICV"
 nb_dim=  32
-PCA = "without PCA" #reducting the latent space to 32 dimensions
-folder = "NOPCA" #32PCs
+PCA = "with PCA" #reducting the latent space to 32 dimensions
+folder = "32PCs" #32PCs
+population="White"
 path_to_model="/neurospin/dico/data/deep_folding/current/models/Champollion_V1_after_ablation"
 # "/neurospin/dico/data/deep_folding/current/models/Champollion_V1_after_ablation"
 # "/neurospin/dico/data/deep_folding/current/models/Champollion_V1_after_ablation_latent_256"
 nb_geneticPC=10
 
 # Setup for the report
-with open(f"{path_to_Champollion}/list_model.txt") as f:
+with open(f"{path_to_Champollion}/list_model_32PCs.txt") as f:
     regions_models = [line.strip() for line in f if line.strip() and not line.strip().startswith("#")]
 
 """[
@@ -101,7 +102,7 @@ elements.append(Paragraph(main_title, ParagraphStyle(
 methodology_text = """
 <b>Les modèles utilisés proviennent de:</b><br/>
 {path_to_model}<br/>
-(Entraînement sur 42,434 sujets).<br/><br/>
+(Entraînement sur 42,433 sujets).<br/><br/>
 
 <b>Chacune des dimensions est résidualisée en utilisant la formule :</b><br/>
 <font name="Courier">{dim_formula}</font><br/><br/>
@@ -110,12 +111,12 @@ methodology_text = """
 --snps-only<br/>
 --maf 0.01<br/>
 --max-alleles 2<br/>
---keep {{selected IID based on the stratification white.British.ancestry or non.white.British.ancestry}}<br/>
+--keep {{selected IID based on white.British.ancestry}}<br/>
 --geno<br/>
 --mind<br/>
 --hwe 1e-15<br/><br/>
 
-Dans le cas de <b>white.British.ancestry</b>, 35,941 sujets sont détectés dans le bfile.<br/>
+Dans le cas de <b>white.British.ancestry</b>, 35,940 sujets sont détectés dans le bfile.<br/>
 <b>Seuls les résultats issus de la cohorte de découverte</b> (white.British.ancestry) sont présents dans le PDF.<br/><br/>
 
 Le nom de la région d'intérêt, suivie du modèle qui a été utilisé pour la représentation associée (par exemple: CINGULATE_left — name17-24-32_191)<br/><br/>
@@ -126,14 +127,14 @@ Le nom de la région d'intérêt, suivie du modèle qui a été utilisé pour la
 3. QQ plot et lambda.<br/><br/>
 4. Matrice de corrélation des SNPs significatifs (p-value < 5e-8), calculée via les corrélations entre les z-scores des dimensions latentes.<br/><br/>
 5. Table des gènes (MAGMA v1.10, refpanel: g1000_eur, ensembl: v102, window: 35,10).<br/><br/>
-   Les 20 gènes ayant les plus faibles p-values sont présents dans la table.<br/><br/>
+   Au plus, les 20 gènes significativement associés ayant les plus faibles p-values sont présents dans la table.<br/><br/>
    Les gènes sont considérés comme associés de manière significative à la région lorsque p-value < 2e-6 (0.05/19264), après correction de Bonferroni  (19264 gènes).<br/><br/> 
 6. Table des ensembles de gènes (MAGMA v1.10 avec MSigDB_20231Hs_MAGMA.txt).<br/><br/>
-   Les 20 ensembles de gènes ayant les plus faibles p-values sont présents dans la table.<br/><br/>
+   Au plus, les 20 ensembles de gènes significativement associés ayant les plus faibles p-values sont présents dans la table.<br/><br/>
    Les ensembles de gènes sont considérés comme associés de manière significative à la région lorsque p-value < 2e-6 (0.05/17009), après correction de Bonferroni  (17009 ensembles.)
 
 """.format(path_to_model= path_to_model,
-    dim_formula="dim_i ~ Age +  C(Sex) + I(Age**2) + Age:C(Sex) + Cheadle + Newcastle + Reading + Bristol + Array + " + " + ".join(
+    dim_formula="dim_i ~ C(Sex) + Age + I(Age*Age) + I(Age*Sex) + I(Age*Age*Sex) + C(Centre) + TICV + " + " + ".join(
         [f"PC{i:02d}" for i in range(1, nb_geneticPC + 1)]
     )
 )
@@ -147,9 +148,9 @@ elements.append(title_heritability)
 heritability_data = []
 
 for region_model in regions_models:
-    region, model = region_model.split('/')
-    base_path = os.path.expanduser(f"{path_to_Champollion}/{region}/{model}/{folder}/white.British.ancestry")
-    h2_path = os.path.join(base_path, "h2_summary.tsv")
+    region, model, pca = region_model.split('/')
+    base_path = os.path.expanduser(f"{path_to_Champollion}/{region}/{model}/{pca}/{population}")
+    h2_path = os.path.join(base_path, "h2", "h2_summary.tsv")
     
     if os.path.exists(h2_path):
         h2_df = pd.read_csv(h2_path, sep="\t")
@@ -160,7 +161,7 @@ for region_model in regions_models:
 
 # Create a DataFrame for the heritability data
 heritability_df = pd.DataFrame(heritability_data, columns=['Region', 'Most Heritable Dimension', 'h2'])
-heritability_df = heritability_df.sort_values(by='h2')
+heritability_df = heritability_df.sort_values(by='h2', ascending=False)
 
 heritability_table_data = [heritability_df.columns.tolist()] + heritability_df.values.tolist()
 heritability_table = Table(heritability_table_data, colWidths=[200, 130, 80])
@@ -182,8 +183,8 @@ gene_counter = Counter()
 bonferroni_threshold = 0.05 / 19264
 
 for region_model in regions_models:
-    region, model = region_model.split('/')
-    base_path = os.path.expanduser(f"{path_to_Champollion}/{region}/{model}/{folder}/white.British.ancestry")
+    region, model, pca = region_model.split('/')
+    base_path = os.path.expanduser(f"{path_to_Champollion}/{region}/{model}/{pca}/{population}")
     magma_path = os.path.join(base_path, "MAGMA")
     magma_genes_file = os.path.join(magma_path, "magma.genes.out")
     
@@ -221,12 +222,52 @@ table.setStyle(TableStyle([
 elements.append(table)
 elements.append(PageBreak())
 
+
+title_top_loci = Paragraph("Top 30 genomic loci regarding the p-value across brain regions", style_title)
+elements.append(title_top_loci)
+top_loci_df = pd.DataFrame({'uniqID':[-9], 'rsID':[-9], 'chr':[-9],
+            'start':[-9], 'end':[-9], 'p':[1], 'nGWASSNPs':[-9], 'Region':[-9]})
+for region_model in regions_models:
+
+    region, model, pca = region_model.split('/')
+    base_path = os.path.expanduser(f"{path_to_Champollion}/{region}/{model}/{pca}/{population}")
+    fuma_path = os.path.join(base_path, "FUMA")
+    genomic_loci_file = os.path.join(fuma_path, "GenomicRiskLoci.txt")
+    if os.path.exists(genomic_loci_file):
+        loci_df = pd.read_csv(genomic_loci_file, sep="\t")
+        loci_df = loci_df[['uniqID', 'rsID', 'chr',
+            'start', 'end', 'p', 'nGWASSNPs']]
+        loci_df["Region"] = region
+        top_loci_df = pd.concat([top_loci_df, loci_df])
+        top_loci_df = top_loci_df.sort_values(by="p", ascending=False)
+        top_loci_df.drop_duplicates(subset='rsID',keep='last', inplace=True)
+        top_loci_df = top_loci_df.iloc[-30:]
+
+
+loci_columns = list(top_loci_df.columns)
+top_loci_df = top_loci_df.sort_values(by="p", ascending=True)
+top_loci_df['p'] = top_loci_df['p'].apply(lambda x: float(f"{x:.2g}"))
+data = [list(top_loci_df.columns)] + top_loci_df.values.tolist()
+
+table = Table(data, colWidths=[60, 55, 25, 45, 45, 30, 45, 90])
+table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, -1), 6),  
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
+        ]))
+elements.append(table)
+elements.append(PageBreak())
+
 # Loop through regions and models to add sections
 for region_model in regions_models:
-    region, model = region_model.split('/')
+    region, model, pca = region_model.split('/')
     print(region)
     print(model)
-    base_path = os.path.expanduser(f"{path_to_Champollion}/{region}/{model}/{folder}/white.British.ancestry")
+    base_path = os.path.expanduser(f"{path_to_Champollion}/{region}/{model}/{pca}/{population}")
     magma_path = os.path.join(base_path, "MAGMA")
     
     # Title for each region-model
@@ -235,7 +276,7 @@ for region_model in regions_models:
     elements.append(title_paragraph)
     
     # h2 summary table
-    h2_path = os.path.join(base_path, "h2_summary.tsv")
+    h2_path = os.path.join(base_path, "h2", "h2_summary.tsv")
     if os.path.exists(h2_path):
         print("Processing h2...")
         h2_df = pd.read_csv(h2_path, sep="\t")
@@ -300,7 +341,7 @@ for region_model in regions_models:
                 print("Processing .eps ...")
                 # Open EPS using PIL and convert it to PNG
                 img = Image.open(eps_path)
-                img.load(scale=2) 
+                img.load(scale=10) 
                 img_width_px, img_height_px = img.size
                 
                 # Assume 96 DPI if not set (common for screen images)
@@ -337,13 +378,44 @@ for region_model in regions_models:
             except Exception as e:
                 print(f"[ERROR] Could not render EPS {eps_name}: {e}")
     
+    fuma_path = os.path.join(base_path, "FUMA")
+    genomic_loci_file = os.path.join(fuma_path, "GenomicRiskLoci.txt")
+    if os.path.exists(genomic_loci_file):
+        print("Processing loci ...")
+        loci_df = pd.read_csv(genomic_loci_file, sep="\t")
+        cols = [
+            'GenomicLocus', 'uniqID', 'rsID', 'chr',
+            'start', 'end', 'p', 'nGWASSNPs'
+            ]
+        loci_df = loci_df[cols]
+        loci_df['p'] = loci_df['p'].apply(lambda x: float(f"{x:.2g}"))
+        data = [list(loci_df.columns)] + loci_df.values.tolist()
+
+        table = Table(
+            data,
+            colWidths=[60, 60, 55, 25, 45, 45, 30, 45] 
+        )
+
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, -1), 6),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
+        ]))
+        elements.append(table)
+        elements.append(PageBreak())
+
     # MAGMA Genes Table
     magma_genes_file = os.path.join(magma_path, "magma.genes.out")
     if os.path.exists(magma_genes_file):
         print("Processing magma genes ...")
         genes_df = pd.read_csv(magma_genes_file, sep="\s+", comment="#")
         top_genes = genes_df.sort_values(by="P").head(20).drop(columns=["ZSTAT"], errors="ignore")
-        #top_genes = top_genes[top_genes["P"] < 0.05/19264]
+        top_genes = top_genes[top_genes["P"] < 0.05/19264]
+        top_genes["P"] = top_genes["P"].apply(lambda x: float(f"{x:.2g}"))
         genes_columns = list(top_genes.columns)
         top_genes['Symbol'] = top_genes['GENE'].apply(lambda x: get_gene_symbol(x))
         top_genes = top_genes[['Symbol']+genes_columns]
@@ -369,7 +441,8 @@ for region_model in regions_models:
         print("Processing magma gene sets ...")
         sets_df = pd.read_csv(magma_sets_file, sep="\s+", comment="#")
         top_sets = sets_df.sort_values(by="P").head(20).drop(columns=["VARIABLE", "TYPE"], errors="ignore")
-        #top_sets = top_sets[top_sets["P"] < 0.05/17009]
+        top_sets = top_sets[top_sets["P"] < 0.05/17009]
+        top_sets["P"] = top_sets["P"].apply(lambda x: float(f"{x:.2g}"))
         data = [list(top_sets.columns)] + top_sets.values.tolist()
 
         table = Table(data, colWidths=[30, 50, 60, 60, 65, 250])
