@@ -23,7 +23,7 @@ def get_gene_symbol(ensembl_id):
         return "Symbol not found"
 
 path_to_Champollion = "/home/ad279118/tmp"
-Champollion_version = "32PCs_withPCA_10genPC_TICV"
+Champollion_version = "toto"
 nb_dim=  32
 PCA = "with PCA" #reducting the latent space to 32 dimensions
 folder = "32PCs" #32PCs
