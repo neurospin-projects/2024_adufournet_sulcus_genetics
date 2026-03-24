@@ -131,6 +131,37 @@ def main():
     113215,
     113316]
 
+    subjects=[197550]
+
+    antero_posteror =['F.Coll.-S.Rh.',
+        'S.F.median-S.F.pol.tr.-S.F.sup.',
+        'S.F.inf.-BROCA-S.Pe.C.inf.',
+        'S.Po.C.',
+        'S.C.-S.Po.C.',
+        'S.F.inter.-S.F.sup.',
+        'S.Call.',
+        'S.Call.-S.s.P.-S.intraCing.',
+        'F.C.M.post.-S.p.C.',
+        'S.s.P.-S.Pa.int.',
+        'S.Or.-S.Olf.',
+        'F.P.O.-S.Cu.-Sc.Cal.',
+        'S.F.marginal-S.F.inf.ant.',
+        'S.F.int.-F.C.M.ant.',
+        'S.T.i.-S.T.s.-S.T.pol.',
+        'S.F.int.-S.R.',
+        'Lobule_parietal_sup.',
+        'S.T.i.-S.O.T.lat.',
+        'S.Pe.C.',
+        'S.T.s.br.',
+        'F.I.P.-F.I.P.Po.C.inf.',
+        'Sc.Cal.-S.Li.',
+        'S.T.s.',
+        'F.C.L.p.-subsc.-F.C.L.a.-INSULA.',
+        'S.C.-sylv.',
+        'S.C.-S.Pe.C.',
+        'OCCIPITAL',
+        'S.Or.']
+
     SIDE = "R"
 
     if SIDE == "R":
@@ -151,10 +182,11 @@ def main():
     path_initial_volume = f"{root_path}/S.C.-sylv./mask/{SIDE}mask_skeleton.nii.gz"
 
     for subject in subjects:
+        counter = 0
         print(subject)
         initial_volume = aims.read(path_initial_volume)
         full_arr = initialize_empty_volume(path_initial_volume)
-        for region in list_regions:
+        for region in antero_posteror:
             if verbose:
                 print(region)
             # read the mask of the given region
@@ -180,9 +212,15 @@ def main():
                 full_arr = uncrop_volume(full_arr=full_arr, decoded_crop=vol_npy, bbmin=bbmin, bbmax=bbmax)
             else :
                 print(f'Reconstruction not found for region {region}')
+            
+            file_out = f"/volatile/ad279118/2026_Noillopmahc/{SIDE}_{subject}_decoded_{counter}.nii.gz"
+            vol_aims = aims.Volume(full_arr.reshape(96, 114, 96))
+            vol_aims.copyHeaderFrom(initial_volume.header())
+            aims.write(vol_aims, file_out)
+            counter+=1
 
         # write the global reconstruction
-        file_out = f"/volatile/ad279118/Figures_report/global_reconstruction/{SIDE}_{subject}_decoded.nii.gz"
+        file_out = f"/volatile/ad279118/2026_Noillopmahc/{SIDE}_{subject}_decoded.nii.gz"
         vol_aims = aims.Volume(full_arr.reshape(96, 114, 96))
         vol_aims.copyHeaderFrom(initial_volume.header())
         aims.write(vol_aims, file_out)

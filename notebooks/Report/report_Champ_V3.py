@@ -22,8 +22,8 @@ def get_gene_symbol(ensembl_id):
     else:
         return "Symbol not found"
 
-path_to_Champollion = "/home/ad279118/tmp"
-Champollion_version = "toto"
+path_to_Champollion = "/home/ad279118/tmp1//26irene_AD_UKB_optim/results/Champollion_V1_32"
+Champollion_version = "32PCs_TIV_20genpcs"
 nb_dim=  32
 PCA = "with PCA" #reducting the latent space to 32 dimensions
 folder = "32PCs" #32PCs
@@ -31,16 +31,11 @@ population="White"
 path_to_model="/neurospin/dico/data/deep_folding/current/models/Champollion_V1_after_ablation"
 # "/neurospin/dico/data/deep_folding/current/models/Champollion_V1_after_ablation"
 # "/neurospin/dico/data/deep_folding/current/models/Champollion_V1_after_ablation_latent_256"
-nb_geneticPC=10
+nb_geneticPC=20
 
 # Setup for the report
 with open(f"{path_to_Champollion}/list_model_32PCs.txt") as f:
     regions_models = [line.strip() for line in f if line.strip() and not line.strip().startswith("#")]
-
-"""[
-    ("ScCal-SLi_left", "name07-41-43_180"),
-    ("SFint-FCMant_left", "name08-09-20_81")
-]"""
 
 regions_models.sort()
 #regions_models = regions_models[:3]
@@ -114,7 +109,7 @@ methodology_text = """
 --keep {{selected IID based on white.British.ancestry}}<br/>
 --geno<br/>
 --mind<br/>
---hwe 1e-15<br/><br/>
+--hwe 1e-9<br/><br/>
 
 Dans le cas de <b>white.British.ancestry</b>, 35,940 sujets sont détectés dans le bfile.<br/>
 <b>Seuls les résultats issus de la cohorte de découverte</b> (white.British.ancestry) sont présents dans le PDF.<br/><br/>
