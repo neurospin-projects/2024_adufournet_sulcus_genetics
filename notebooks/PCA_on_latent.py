@@ -20,19 +20,14 @@ file_paths = glob.glob(base_path)
 
 
 # If the number of principal components is depending on the percentage of total variance
-variance_bool = True
 variance = 1
 if variance != 1:
     var = str(variance).split('.')[1]
 elif variance==1:
     var=100
 
-# If the number of principal components is given
-nb_pc_bool = True
-
-
 # Each dimension in transformed to have a 0 mean and a 1 std
-standard_scaler = True
+standard_scaler = False
 
 
 for file in file_paths:
@@ -102,5 +97,5 @@ for file in file_paths:
         print(pca_embeddings_UKB.head())
         nb_subjects = len(pca_embeddings_UKB)
         path_to_save=f'{initial_path}/{nb_subjects}_stddim_32pc.csv' #f'{initial_path}/{nb_subjects}_{var}varpc.csv'
-        pca_embeddings_UKB.to_csv(path_to_save)
-        print('File saved:', path_to_save)
+        #pca_embeddings_UKB.to_csv(path_to_save)
+        #print('File saved:', path_to_save)

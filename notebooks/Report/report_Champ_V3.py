@@ -22,7 +22,7 @@ def get_gene_symbol(ensembl_id):
     else:
         return "Symbol not found"
 
-path_to_Champollion = "/home/ad279118/tmp1//26irene_AD_UKB_optim/results/Champollion_V1_32"
+path_to_Champollion = "/home/ad279118/ukb/26irene_AD_UKB_optim/results/Champollion_V1_32"
 Champollion_version = "32PCs_TIV_20genpcs"
 nb_dim=  32
 PCA = "with PCA" #reducting the latent space to 32 dimensions
